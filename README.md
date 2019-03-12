@@ -41,4 +41,94 @@ Increasing `USE_IMAGE_PERCENT` will increase the percentage of the training imag
 
 Adjusting these variables will affect the accuracy of the final model.
 
+### running the app
+
+If you have the tensorflow server app running on the docker or k8s hostname `roadsigns-tensorflow` - here is how to build and run the app.
+
+#### build
+
+```
+cd app
+docker build -t roadsignsapp .
+```
+
+#### run
+
+```
+docker run -d \
+  -p 8000:80 \
+  --link roadsigns-tensorflow:roadsigns-tensorflow \
+  -e TENSORFLOW_HOST=roadsigns-tensorflow:8501 \
+  --name roadsignsapp \
+  roadsignsapp 
+```
+
+If you are using Kubernetes - you don't need the link but the `TENSORFLOW_HOST` should be set to the service name of the tensorflow serving service.
+
+#### App proxy
+
+To get around CORS - the app will proxy any requests to `/v1` onto the tensorflow container - for ingress you only need to foward traffic to the app container and it will look after getting data to the tensorflow serving container.
+
+#### image data
+
+The image data we are sending is prebuilt into `app/www/appdata.json`
+
+This data has 3 top level fields:
+
+ * `image_filenames` - the filenames of the images to view
+ * `image_labels` - the corresponding labels for those images
+ * `tensorflow_images` - the data structure of the image we send to tensorflow
+
+The `tensorflow_images` property was JSON exported from the data passed to the model in the notebook.
+
+#### adjusting payload
+
+In the file `app/www/js/init.js` is this code at the top:
+
+```
+var TENSORFLOW_URL = '/v1/models/roadsigns_model:predict'
+var appData = null
+
+function loadResult(label, imageData) {
+  $('#results-label').text(label)
+  $('#results-data').hide()
+  $('#results-error').hide()
+  $('#results-loading').show()
+
+  var requestPayload = {
+    inputs: {
+      keep_prob: [1], 
+      keep_prob_conv: [1],
+      x: [imageData]
+    },
+  }
+
+  $.ajax({
+    method: 'POST',
+    url: TENSORFLOW_URL,
+    data: JSON.stringify(requestPayload),
+    dataType: 'json',
+    contentType: "application/json; charset=utf-8",
+    success: function(response) {
+      $('#results-loading').hide()
+      var data = JSON.parse(response.responseText)
+      var dataString = JSON.stringify(data, null, 4)
+      $('#results-data').show()
+      $('#results-json').text(dataString)
+    },
+    error: function(response) {
+      var errorMessage = response.status + ' ' + response.statusText
+      $('#results-error').text(errorMessage)
+      $('#results-loading').hide()
+      $('#results-error').show()
+      $('#results-data').show()
+      $('#results-json').text(response.responseText)
+    }
+  })
+}
+```
+
+You can adjust the `requestPayload` accordingly.
+
+The output is shown as raw JSON in the model window that appears.
 

@@ -1,0 +1,17 @@
+{
+  "name": "dotscience-roadsigns",
+  "private": true,
+  "version": "1.0.0",
+  "description": "demo of the roadsigns tensorflow model",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "async": "^2.6.0",
+    "body-parser": "^1.17.2",
+    "ecstatic": "^3.3.1",
+    "express": "^4.15.3",
+    "http-proxy": "^1.17.0"
+  }
+}

@@ -1,6 +1,6 @@
 (function($){
 
-  var TENSORFLOW_URL = '/v1/models/roadsigns_model:predict'
+  var TENSORFLOW_URL = '/v1/models/model:predict'
   var appData = null
 
   function loadResult(label, imageData) {
@@ -13,7 +13,7 @@
       inputs: {
         keep_prob: [1], 
         keep_prob_conv: [1],
-        x: [imageData]
+        input_image: [imageData]
       },
     }
 
@@ -23,12 +23,11 @@
       data: JSON.stringify(requestPayload),
       dataType: 'json',
       contentType: "application/json; charset=utf-8",
-      success: function(response) {
+      success: function(response) {        
         $('#results-loading').hide()
-        var data = JSON.parse(response.responseText)
-        var dataString = JSON.stringify(data, null, 4)
+        var dataString = JSON.stringify(response, null, 4)
         $('#results-data').show()
-        $('#results-json').text(dataString)
+        $('#results-json').text(dataString)       
       },
       error: function(response) {
         var errorMessage = response.status + ' ' + response.statusText

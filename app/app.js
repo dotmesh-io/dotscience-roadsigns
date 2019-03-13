@@ -9,7 +9,7 @@ if(!process.env.TENSORFLOW_HOST) {
   process.exit(1)  
 }
 
-tf = process.env.TENSORFLOW_HOST
+var tf = process.env.TENSORFLOW_HOST
 
 const App = () => {
 

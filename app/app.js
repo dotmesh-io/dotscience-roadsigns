@@ -7,7 +7,7 @@ const httpProxy = require('http-proxy')
 
 var tf = ``
 
-if(process.env.TENSORFLOW_HOST) {
+if(!process.env.TENSORFLOW_HOST) {
   console.error(`TENSORFLOW_HOST environment required`)
   process.exit(1)
   // tf = process.env.TENSORFLOW_HOST

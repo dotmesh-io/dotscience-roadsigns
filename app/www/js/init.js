@@ -2,6 +2,7 @@
 
   var TENSORFLOW_URL = '/v1/models/model:predict'
   var appData = null
+  var classes = null
 
   function loadResult(label, imageData) {
     $('#results-label').text(label)
@@ -25,7 +26,27 @@
       contentType: "application/json; charset=utf-8",
       success: function(response) {        
         $('#results-loading').hide()
-        var dataString = JSON.stringify(response, null, 4)
+        
+        var transformed = []
+        response.outputs[0].map(function(output, i) {
+          console.log(`class: ${i} | score: ${output}`)
+
+          // low probability
+          if (output < 0.01) {
+            return
+          }
+
+          transformed.push({
+            'percentage': output * 100,
+            'score': output,
+            'class': classes[i],            
+          })
+        })
+
+        transformed.sort((a, b) => (a.score < b.score) ? 1 : -1)
+      
+
+        var dataString = JSON.stringify(transformed, null, 4)
         $('#results-data').show()
         $('#results-json').text(dataString)       
       },
@@ -71,6 +92,12 @@
     })
   }
 
+  function loadClasses() {
+    $.getJSON('/classes.json', function(data) {
+      classes = data      
+    })
+  }
+
   $(function(){
 
     $('.sidenav').sidenav()
@@ -79,6 +106,7 @@
     $('#results-data').hide()
     
     loadAppData()
+    loadClasses()
 
   })
 })(jQuery)

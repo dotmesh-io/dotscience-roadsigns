@@ -37,13 +37,13 @@
           }
 
           transformed.push({
-            'percentage': output * 100,
-            'score': output,
+            // 'probability': (output * 100).toFixed(2),
+            'probability': output,
             'class': classes[i],            
           })
         })
 
-        transformed.sort((a, b) => (a.score < b.score) ? 1 : -1)
+        transformed.sort((a, b) => (a.probability < b.probability) ? 1 : -1)
       
 
         var dataString = JSON.stringify(transformed, null, 4)

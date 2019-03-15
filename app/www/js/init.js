@@ -4,11 +4,15 @@
   var appData = null
   var classes = null
 
+  var chart = null
+  var chartId = 'results-chart-1'
+
   function loadResult(label, imageData) {
     $('#results-label').text(label)
     $('#results-data').hide()
     $('#results-error').hide()
     $('#results-loading').show()
+    // $('#results-chart').hide()
 
     var requestPayload = {
       inputs: {
@@ -24,18 +28,11 @@
       data: JSON.stringify(requestPayload),
       dataType: 'json',
       contentType: "application/json; charset=utf-8",
-      success: function(response) {        
+      success: function(response) {   
         $('#results-loading').hide()
         
         var transformed = []
-        response.outputs[0].map(function(output, i) {
-          console.log(`class: ${i} | score: ${output}`)
-
-          // low probability
-          if (output < 0.01) {
-            return
-          }
-
+        response.outputs[0].map(function(output, i) {         
           transformed.push({
             // 'probability': (output * 100).toFixed(2),
             'probability': output,
@@ -44,7 +41,62 @@
         })
 
         transformed.sort((a, b) => (a.probability < b.probability) ? 1 : -1)
-      
+
+        transformed = transformed.slice(0, 5)
+
+        var yAxis = []
+        var xAxis = []
+
+        transformed.map(function(entry, i) {
+          xAxis.push(entry.probability)
+          yAxis.push(entry.class)
+        })
+
+        var options = {
+          chart: {
+            id: chartId,
+            height: 350,
+            type: 'bar'
+          },
+          plotOptions: {
+            bar: {
+              horizontal: true,
+              dataLabels: {
+                position: 'top'
+              }              
+            },
+            dataLabels: {
+              enabled: true,
+              style: {
+                  colors: ['#333']
+              },
+              offsetX: 30
+            },
+          },
+          series: [{
+            name: 'Probability',
+            data: xAxis            
+          }],
+          xaxis: {
+            categories: yAxis,            
+          },
+          animations: {
+            enabled: true,
+            easing: 'easeinout',
+            speed: 1500,
+            animateGradually: {
+                enabled: true,
+                delay: 150
+            },
+            dynamicAnimation: {
+                enabled: true,
+                speed: 350
+            }
+          }
+        }
+               
+        chart = new ApexCharts(document.querySelector("#results-chart"), options)        
+        chart.render()
 
         var dataString = JSON.stringify(transformed, null, 4)
         $('#results-data').show()
@@ -78,6 +130,9 @@
       ].join("\n"))
 
       elem.click(function() {
+        if (chart) {
+          chart.destroy()
+        }
         loadResult(label, imageData)
       })
 

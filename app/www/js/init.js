@@ -64,26 +64,69 @@
               dataLabels: {
                 position: 'top'
               }              
-            },
-            dataLabels: {
-              enabled: true,
-              style: {
-                  colors: ['#333']
-              },
-              offsetX: 30
-            },
+            }            
+          },
+          legend: {
+            show: true,
+            showForSingleSeries: false,
+            showForNullSeries: true,
+            showForZeroSeries: true,
+            position: 'bottom',
+            horizontalAlign: 'center', 
+            floating: false,
+            fontSize: '17px',
+          },
+          dataLabels: {
+            enabled: true,
           },
           series: [{
             name: 'Probability',
-            data: xAxis            
+            data: xAxis, 
+            title: {
+              text: 'Class'
+            },        
           }],
           xaxis: {
-            categories: yAxis,            
+            categories: yAxis, // xaxis gets yAxis because we have a horizontal chart
+            title: {
+              text: 'Probability'
+            },
+            labels: {
+              show: true,
+              rotate: -45,
+              rotateAlways: false,
+              hideOverlappingLabels: true,
+              showDuplicates: false,
+              trim: true,
+              minHeight: undefined,
+              maxHeight: 120,
+              style: {
+                  colors: [],
+                  fontSize: '15px',
+                  fontFamily: 'Helvetica, Arial, sans-serif',
+                  cssClass: 'apexcharts-xaxis-label',
+              },
+              offsetX: 0,
+              offsetY: 0,
+              format: undefined,
+              formatter: undefined
+             },
+          },
+          yaxis: {         
+            labels: {
+              minWidth: 0,
+              maxWidth: 300,
+              style: {               
+                  fontSize: '16px',
+                  fontFamily: 'Helvetica, Arial, sans-serif',
+                  cssClass: 'apexcharts-yaxis-label',
+              }                      
+            },
           },
           animations: {
             enabled: true,
             easing: 'easeinout',
-            speed: 1500,
+            speed: 300,
             animateGradually: {
                 enabled: true,
                 delay: 150

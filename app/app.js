@@ -6,8 +6,10 @@ const httpProxy = require('http-proxy')
 
 if(!process.env.TENSORFLOW_HOST) {
   console.error(`TENSORFLOW_HOST environment required`)
-  process.exit(1)
+  process.exit(1)  
 }
+
+var tf = process.env.TENSORFLOW_HOST
 
 const App = () => {
 
@@ -24,7 +26,7 @@ const App = () => {
   const app = express()
 
   app.use('/v1', (req, res, next) => {
-    proxy.web(req, res, { target: `http://${process.env.TENSORFLOW_HOST}/v1` })
+    proxy.web(req, res, { target: `${tf}/v1` })
   })
 
   app.use(ecstatic({

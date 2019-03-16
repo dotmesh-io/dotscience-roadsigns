@@ -1,19 +1,24 @@
 (function($){
 
-  var TENSORFLOW_URL = '/v1/models/roadsigns_model:predict'
+  var TENSORFLOW_URL = '/v1/models/model:predict'
   var appData = null
+  var classes = null
+
+  var chart = null
+  var chartId = 'results-chart-1'
 
   function loadResult(label, imageData) {
     $('#results-label').text(label)
     $('#results-data').hide()
     $('#results-error').hide()
     $('#results-loading').show()
+    // $('#results-chart').hide()
 
     var requestPayload = {
       inputs: {
         keep_prob: [1], 
         keep_prob_conv: [1],
-        x: [imageData]
+        input_image: [imageData]
       },
     }
 
@@ -23,12 +28,122 @@
       data: JSON.stringify(requestPayload),
       dataType: 'json',
       contentType: "application/json; charset=utf-8",
-      success: function(response) {
+      success: function(response) {   
         $('#results-loading').hide()
-        var data = JSON.parse(response.responseText)
-        var dataString = JSON.stringify(data, null, 4)
+        
+        var transformed = []
+        response.outputs[0].map(function(output, i) {         
+          transformed.push({
+            // 'probability': (output * 100).toFixed(2),
+            'probability': output,
+            'class': classes[i],            
+          })
+        })
+
+        transformed.sort((a, b) => (a.probability < b.probability) ? 1 : -1)
+
+        transformed = transformed.slice(0, 5)
+
+        var yAxis = []
+        var xAxis = []
+
+        transformed.map(function(entry, i) {
+          xAxis.push(entry.probability)
+          yAxis.push(entry.class)
+        })
+
+        var options = {
+          chart: {
+            id: chartId,
+            height: 350,
+            type: 'bar'
+          },
+          plotOptions: {
+            bar: {
+              horizontal: true,
+              dataLabels: {
+                position: 'top'
+              }              
+            }            
+          },
+          legend: {
+            show: true,
+            showForSingleSeries: false,
+            showForNullSeries: true,
+            showForZeroSeries: true,
+            position: 'bottom',
+            horizontalAlign: 'center', 
+            floating: false,
+            fontSize: '17px',
+          },
+          dataLabels: {
+            enabled: true,
+          },
+          series: [{
+            name: 'Probability',
+            data: xAxis, 
+            title: {
+              text: 'Class'
+            },        
+          }],
+          xaxis: {
+            categories: yAxis, // xaxis gets yAxis because we have a horizontal chart
+            title: {
+              text: 'Probability'
+            },
+            labels: {
+              show: true,
+              rotate: -45,
+              rotateAlways: false,
+              hideOverlappingLabels: true,
+              showDuplicates: false,
+              trim: true,
+              minHeight: undefined,
+              maxHeight: 120,
+              style: {
+                  colors: [],
+                  fontSize: '15px',
+                  fontFamily: 'Helvetica, Arial, sans-serif',
+                  cssClass: 'apexcharts-xaxis-label',
+              },
+              offsetX: 0,
+              offsetY: 0,
+              format: undefined,
+              formatter: undefined
+             },
+          },
+          yaxis: {         
+            labels: {
+              minWidth: 0,
+              maxWidth: 300,
+              style: {               
+                  fontSize: '16px',
+                  fontFamily: 'Helvetica, Arial, sans-serif',
+                  cssClass: 'apexcharts-yaxis-label',
+              }                      
+            },
+          },
+          animations: {
+            enabled: true,
+            easing: 'easeinout',
+            speed: 300,
+            animateGradually: {
+                enabled: true,
+                delay: 150
+            },
+            dynamicAnimation: {
+                enabled: true,
+                speed: 350
+            }
+          }
+        }
+               
+        chart = new ApexCharts(document.querySelector("#results-chart"), options)        
+        chart.render()
+
+        var dataString = JSON.stringify(transformed, null, 4)
         $('#results-data').show()
-        $('#results-json').text(dataString)
+        $('#results-json').text(dataString)       
       },
       error: function(response) {
         var errorMessage = response.status + ' ' + response.statusText
@@ -58,6 +173,9 @@
       ].join("\n"))
 
       elem.click(function() {
+        if (chart) {
+          chart.destroy()
+        }
         loadResult(label, imageData)
       })
 
@@ -72,6 +190,12 @@
     })
   }
 
+  function loadClasses() {
+    $.getJSON('/classes.json', function(data) {
+      classes = data      
+    })
+  }
+
   $(function(){
 
     $('.sidenav').sidenav()
@@ -80,6 +204,7 @@
     $('#results-data').hide()
     
     loadAppData()
+    loadClasses()
 
   })
 })(jQuery)

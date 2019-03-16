@@ -1,0 +1,8 @@
+
+stages:
+  - build
+
+build_image:  
+  stage: build
+  script:
+    - make image

@@ -6,9 +6,9 @@ A Jupyter notebook used to train a tensorflow model to recognize german roadsign
 
 Create a new dotscience project.
 
-Update the two files:
+Upload the two files:
 
- * `Traffic_Sign_Classifier.ipynb`
+ * `roadsigns.ipynb`
  * `signnames.csv`
 
 Launch Jupyter on a runner.

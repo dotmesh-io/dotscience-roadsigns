@@ -4,6 +4,8 @@ A Jupyter notebook used to train a tensorflow model to recognize german roadsign
 
 ### instructions
 
+Create a GPU enabled runner and install Dotscience on it. To skip installing `nvidia-runtime` on a GCP runner, search for the VM `NVIDIA GPU Cloud Image for Deep Learning and HPC`. This comes with `nvidia-runtime` installed. Then follow the instructions on the [Dotscience GCP runner setup page](https://docs.dotscience.com/setup/set-up-google-cloud-vm/). 
+
 Create a new dotscience project.
 
 Upload the two files:

@@ -71,6 +71,7 @@ nav .brand-logo {
 
 .card .card-content {
   padding: 15px !important;
+  text-align: center;
 }
 
 .card .card-action:last-child {

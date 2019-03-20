@@ -12,6 +12,7 @@ html {
   font-family: 'Archivo', system-ui, sans-serif;
   line-height: 1.8;
   color: #231F20;
+  background-color: #f8f8f8;
 }
 
 h1 {
@@ -65,8 +66,12 @@ nav .brand-logo {
   display: inline-block !important;
   margin: 10px;
   cursor: pointer;
-  width: 181px;
-  border-radius: 10px !important
+  min-width: 181px;
+  max-width: 400px;
+  width: 18%;
+  border-radius: 0 !important;
+  box-shadow: 0 0px 6px rgba(0,0,0,0.05), 0 0px 24px rgba(0,0,0,0.05);
+
 }
 
 .card .card-content {
@@ -74,16 +79,22 @@ nav .brand-logo {
   text-align: center;
 }
 
-.card .card-action:last-child {
-  border-radius: 0 0 10px 10px;
+.card .card-action {
+  padding: 15px !important;
 }
 
-.card .card-image {
-  max-width: 185px;
+#image-cards {
+  text-align:center;
+}
+
+
+
+.card .card-action:last-child {
+  border-radius: 0;
 }
 
 .card .card-image img {
-  border-radius: 10px 10px 0 0;
+  border-radius: 0;
 }
 
 #results-data pre {

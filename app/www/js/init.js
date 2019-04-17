@@ -1,24 +1,23 @@
 (function($){
 
-  var TENSORFLOW_URL = '/v1/models/model:predict'
+  var TENSORFLOW_URL = '/v1/models/b64:predict'
   var appData = null
   var classes = null
 
   var chart = null
   var chartId = 'results-chart-1'
 
-  function loadResult(label, imageData) {
+  function loadResult(label, imageData, b64EncodedData) {
     $('#results-label').text(label)
     $('#results-data').hide()
     $('#results-error').hide()
     $('#results-loading').show()
-    // $('#results-chart').hide()
-
+ 
     var requestPayload = {
       inputs: {
         keep_prob: [1], 
         keep_prob_conv: [1],
-        input_image: [imageData]
+        input_image_bytes: [[b64EncodedData]] 
       },
     }
 
@@ -176,12 +175,42 @@
         if (chart) {
           chart.destroy()
         }
-        loadResult(label, imageData)
+        toDataURL(
+          // 'https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0',
+          filename,
+          function(dataUrl) {
+            // console.log('RESULT:', dataUrl)
+            loadResult(label, imageData, dataUrl)
+          }
+        )
+        // loadResult(label, imageData, filename)
       })
 
       $('#image-cards').append(elem)
     })
   }
+
+  function toDataURL(src, callback, outputFormat) {
+    var img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.onload = function() {
+      var canvas = document.createElement('CANVAS');
+      var ctx = canvas.getContext('2d');
+      var dataURL;
+      canvas.height = this.naturalHeight;
+      canvas.width = this.naturalWidth;
+      ctx.drawImage(this, 0, 0);
+      dataURL = canvas.toDataURL(outputFormat);
+      dataURL= dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+      callback(dataURL);
+    };
+    img.src = src;
+      if (img.complete || img.complete === undefined) {
+        img.src = "data:image/jpg;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+        img.src = src;
+      }
+    }
+    
 
   function loadAppData() {
     $.getJSON('/appdata.json', function(data) {
@@ -196,7 +225,7 @@
     })
   }
 
-  $(function(){
+  $(function(){``
 
     $('.sidenav').sidenav()
     $('.modal').modal()

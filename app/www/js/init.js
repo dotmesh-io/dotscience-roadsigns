@@ -11,8 +11,7 @@
     $('#results-label').text(label)
     $('#results-data').hide()
     $('#results-error').hide()
-    $('#results-loading').show()
-    // $('#results-chart').hide()
+    $('#results-loading').show()  
 
     var requestPayload = {
       inputs: {

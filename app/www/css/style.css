@@ -5,6 +5,30 @@
  *
  * Made By MaterializeCSS.com
  */
+ @import url('https://fonts.googleapis.com/css?family=Archivo');
+
+html {
+  font-size: 16px;
+  font-family: 'Archivo', system-ui, sans-serif;
+  line-height: 1.8;
+  color: #231F20;
+  background-color: #f8f8f8;
+}
+
+h1 {
+  font-size: 57px;
+  font-weight: 600;
+}
+
+
+.black {
+  background-color: #231F20 !important;
+}
+
+.modal-header {
+  text-align: right;
+  padding:10px;
+}
 
 .icon-block {
   padding: 0 15px;
@@ -19,14 +43,19 @@
 }
 
 .brand-logo * {
-  color: white !important;
-  fill: white  !important;
+  color: #FFF200 !important;
+  fill: #FFF200 !important;
+  margin-top: 10px;
 }
 
 .logo-title {
   display: inline-block;
-  margin-left: 60px;
+  margin-left: 45px;
   padding-bottom: 100px;
+  font-size: 22px;
+}
+.logo-title span {
+  color: #FFF200;
 }
 
 nav .brand-logo {
@@ -37,11 +66,35 @@ nav .brand-logo {
   display: inline-block !important;
   margin: 10px;
   cursor: pointer;
+  min-width: 181px;
+  max-width: 400px;
+  width: 18%;
+  border-radius: 0 !important;
+  box-shadow: 0 0px 6px rgba(0,0,0,0.05), 0 0px 24px rgba(0,0,0,0.05);
+
 }
 
-.card .card-image {
-  max-width: 150px;
-  border: 1px solid #000;
+.card .card-content {
+  padding: 15px !important;
+  text-align: center;
+}
+
+.card .card-action {
+  padding: 15px !important;
+}
+
+#image-cards {
+  text-align:center;
+}
+
+
+
+.card .card-action:last-child {
+  border-radius: 0;
+}
+
+.card .card-image img {
+  border-radius: 0;
 }
 
 #results-data pre {
@@ -53,4 +106,70 @@ nav .brand-logo {
 
 #results-error {
   color: red;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
+  color: #231F20;
+  margin-right: 24px;
+  -webkit-transition: color .3s ease;
+  transition: color .3s ease;
+  text-transform: none;
+}
+
+.button, a.button {
+  cursor: pointer;
+  font-weight: 600;
+  position: relative;
+  padding: 0 15px;
+  vertical-align: middle;
+  text-align: left;
+  color: #68595D;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 3px;
+  -webkit-transition-property: color;
+  -o-transition-property: color;
+  transition-property: color;
+  -webkit-transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+  background-image: none;
+  text-align: center;
+  -webkit-transition: background-color linear 0.3s;
+  -o-transition: background-color linear 0.3s;
+  transition: background-color linear 0.3s;
+  border: 1px solid transparent;
+}
+
+.button, a.button {
+  font-size: 14px;
+  line-height: 35px;
+  color: #231F20;
+  background-color: #ABDFFF;
+  border-color: #6AAFD9;
+  -webkit-transition-duration: 0.1s;
+  -o-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+}
+.buttonSecondary, a.buttonSecondary {
+  color: #231F20 !important;
+  background-color: #fff;
+  border-color: #d1cccc;
+  width: 100%;
+}
+
+.button:before {
+  content: '';
+  position: absolute;
+  border-style: solid;
+  border-width: 3px;
+  border-color: #ABDFFF;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 6px;
+  opacity: 0;
+  -webkit-animation-duration: 3.5s;
+  animation-duration: 3.5s;
 }

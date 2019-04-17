@@ -160,15 +160,13 @@
       var label = appData.image_labels[i]
       var imageData = appData.tensorflow_images[i]
       var elem = $([
-        '<a class="modal-trigger" href="#resultsmodel">',
         '<div class="card">',
           '<div class="card-image">',
-            '<img src="' + filename + '">',
+            '<a class="modal-trigger" href="#resultsmodel"><img src="' + filename + '"></a>',
           '</div>',
-          '<div class="card-content"><p>' + label + '</p></div>',
-          '<div class="card-action"><a href="#">Predict</a></div>',
+          '<div class="card-content"><a class="modal-trigger" href="#resultsmodel"><p>' + label + '</p></a></div>',
+          '<div class="card-action"><a class="modal-trigger button buttonSecondary waves-effect" href="#resultsmodel">Predict</a></div>',
         '</div>',
-        '</a>',
       ].join("\n"))
 
       elem.click(function() {

@@ -26,8 +26,8 @@ const App = () => {
   // the HTTP server
   const app = express()
 
-  app.use('/v1/predictions', (req, res, next) => {
-    proxy.web(req, res, { target: `${mpx}/v1` })
+  app.use('/api', (req, res, next) => {
+    proxy.web(req, res, { target: `${mpx}/api` })
   })
 
   app.use('/v1', (req, res, next) => {

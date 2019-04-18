@@ -10,6 +10,7 @@ if(!process.env.TENSORFLOW_HOST) {
 }
 
 var tf = process.env.TENSORFLOW_HOST
+var mpx = process.env.MODEL_PROXY_HOST
 
 const App = () => {
 
@@ -24,6 +25,10 @@ const App = () => {
 
   // the HTTP server
   const app = express()
+
+  app.use('/v1/predictions', (req, res, next) => {
+    proxy.web(req, res, { target: `${mpx}/v1` })
+  })
 
   app.use('/v1', (req, res, next) => {
     proxy.web(req, res, { target: `${tf}/v1` })

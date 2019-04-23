@@ -1,25 +1,25 @@
 (function($){
 
-  var TENSORFLOW_URL = '/v1/models/b64:predict'
+  var TENSORFLOW_URL = '/v1/models/model:predict'
   var appData = null
   var classes = null
 
   var chart = null
   var chartId = 'results-chart-1'
 
-  function loadResult(label, imageData, b64EncodedData) {
+  function loadResult(label, b64EncodedData) {
     $('#results-label').text(label)
     $('#results-data').hide()
     $('#results-error').hide()
     $('#results-loading').show()
  
     var requestPayload = {
-      inputs: {
-        keep_prob: [1], 
-        keep_prob_conv: [1],
-        input_image_bytes: [[b64EncodedData]] 
-      },
-    }
+      instances: [
+        {
+          input_image_bytes: [b64EncodedData] 
+        }        
+      ]        
+    }   
 
     $.ajax({
       method: 'POST',
@@ -31,9 +31,8 @@
         $('#results-loading').hide()
         
         var transformed = []
-        response.outputs[0].map(function(output, i) {         
-          transformed.push({
-            // 'probability': (output * 100).toFixed(2),
+        response.predictions[0].map(function(output, i) {         
+          transformed.push({          
             'probability': output,
             'class': classes[i],            
           })
@@ -157,8 +156,7 @@
 
   function renderImages() {
     appData.image_filenames.map(function(filename, i) {
-      var label = appData.image_labels[i]
-      var imageData = appData.tensorflow_images[i]
+      var label = appData.image_labels[i]      
       var elem = $([
         '<div class="card">',
           '<div class="card-image">',
@@ -178,7 +176,7 @@
           filename,
           function(dataUrl) {
             // console.log('RESULT:', dataUrl)
-            loadResult(label, imageData, dataUrl)
+            loadResult(label, dataUrl)
           }
         )
         // loadResult(label, imageData, filename)
@@ -199,8 +197,14 @@
       canvas.width = this.naturalWidth;
       ctx.drawImage(this, 0, 0);
       dataURL = canvas.toDataURL(outputFormat);
-      dataURL= dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-      callback(dataURL);
+      let encodedBase64 = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+
+      // well, we need to do some replacements: https://www.tensorflow.org/api_docs/python/tf/io/decode_base64
+      let encodedURLSafeb64 = encodedBase64.replace(/\+/g, '-') // Convert '+' to '-'
+        .replace(/\//g, '_') // Convert '/' to '_'
+        .replace(/=+$/, ''); // Remove ending '='
+
+      callback(encodedURLSafeb64);
     };
     img.src = src;
       if (img.complete || img.complete === undefined) {

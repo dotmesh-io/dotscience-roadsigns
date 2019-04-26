@@ -1,6 +1,5 @@
 import dotscience as ds
 import numpy as np
-import pandas as pd
 import pickle
 import os
 import cv2
@@ -169,7 +168,6 @@ ds.summary("accuracy",
 # Fetch the Keras session and save the model
 # The signature definition is defined by the input and output tensors,
 # and stored with the default serving key
-import tempfile
 
 MODEL_DIR = "./model"
 version = 1
@@ -189,8 +187,8 @@ ds.label("model.directory", ds.output("model"))
 ds.label("model.framework", "tensorflow")
 ds.label("model.framework.version", tf.__version__)
 
-for file in os.listdir("model/1"):
-    print(file)
-    ds.output("model/1/" + file)
+for root, dirs, files in os.walk("model"):
+   for name in files:
+      ds.output(os.path.join(root, name))
 
 ds.publish()

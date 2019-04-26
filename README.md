@@ -28,7 +28,7 @@ This is because Tensorflow serving requires there to be a version folder under t
 
 To re-train the model - try changing the optimizer to `sgd` rather than `adam` (it should perform less well) and also change `epochs` param (search for `ds.parameter`).
 
-# advanced demo of production usage (requires modeldemo environment access)
+## advanced demo of production usage (requires modeldemo environment access)
 
 ### running the app
 

@@ -20,12 +20,12 @@ Using the Dotscience web UI, drag and drop the signnames.csv file from the root 
 ## fetching data
 
 ```
-ds run --verbose --nvidia . $PROJECT nvcr.io/nvidia/tensorflow:19.02-py3 -- bash -c "bash get-data.sh"
+ds run --verbose --nvidia . $PROJECT quay.io/dotmesh/dotscience-tensorflow-opencv:19.02-py3 -- bash get-data.sh
 ```
 
 ## train model
 
 ```
-ds run --verbose --nvidia . $PROJECT nvcr.io/nvidia/tensorflow:19.02-py3 -- bash -c "bash setup.sh && python train.py"
+ds run --verbose --nvidia . $PROJECT quay.io/dotmesh/dotscience-tensorflow-opencv:19.02-py3 -- python train.py
 ```
 

@@ -4,19 +4,24 @@ To run this using `ds run`, try the following:
 
 ## setup
 
-find your project id in the dotscience UI - by uploading a python file and then expanding the python file's instructions :'(
+find your project id in the dotscience UI - by uploading a script (python or shell) and then expanding the "Run script" instructions - the project id is after the sample `ds run .` command and looks like `project-23d1a936-default-workspace`
 
 ```
 export PROJECT=<your project id>
+cd dotscience-roadsigns/ds-run-demo
 ```
 
-## train model
+## upload signnames.csv
+
+Using the Dotscience web UI, drag and drop the signnames.csv file from the root of this repo.
+
+## fetching data
 
 ```
 ds run --verbose --nvidia . $PROJECT nvcr.io/nvidia/tensorflow:19.03-py3 -- bash -c "bash get-data.sh"
 ```
 
-## fetching data
+## train model
 
 ```
 ds run --verbose --nvidia . $PROJECT nvcr.io/nvidia/tensorflow:19.03-py3 -- bash -c "bash setup.sh && python train.py"

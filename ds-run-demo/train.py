@@ -1,10 +1,3 @@
-# import comet_ml in the top of your file
-from comet_ml import Experiment
-    
-# Add the following code anywhere in your machine learning file
-experiment = Experiment(api_key="oSuS99S0WIpZtUWOmipvxeIGl",
-                        project_name="general", workspace="lukemarsden")
-
 import dotscience as ds
 import numpy as np
 import pandas as pd
@@ -26,10 +19,6 @@ test_file = "test.p"
 train = pickle.load(open(ds.input(train_file),"rb"))
 valid = pickle.load(open(ds.input(valid_file),"rb"))
 test = pickle.load(open(ds.input(test_file),"rb"))
-
-experiment.log_asset(train_file)
-experiment.log_asset(valid_file)
-experiment.log_asset(test_file)
 
 import csv
 # Mapping ClassID to traffic sign names

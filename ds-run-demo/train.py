@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 
 ds.script()
+ds.start()
 
 train_file = "train.p"
 valid_file = "valid.p"

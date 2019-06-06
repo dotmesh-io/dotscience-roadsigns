@@ -13,9 +13,9 @@ export PROJECT=<your project id>
 cd dotscience-roadsigns/ds-run-demo
 ```
 
-## log into dotscience from ds
+## follow the instructions in the web ui
 
-follow the instructions in the web interface around "Log into dotscience..."
+follow the instructions in the web interface from "Install the dotscience (ds) client" up to and including "Log into dotscience..."
 
 ## upload signnames.csv
 

@@ -13,6 +13,10 @@ export PROJECT=<your project id>
 cd dotscience-roadsigns/ds-run-demo
 ```
 
+## log into dotscience from ds
+
+follow the instructions in the web interface around "Log into dotscience..."
+
 ## upload signnames.csv
 
 Using the Dotscience web UI, drag and drop the signnames.csv file from the root of this repo into the project resources in Dotscience.

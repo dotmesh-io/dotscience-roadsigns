@@ -29,3 +29,6 @@ ds run --verbose --nvidia . $PROJECT quay.io/dotmesh/dotscience-tensorflow-openc
 ds run --verbose --nvidia . $PROJECT quay.io/dotmesh/dotscience-tensorflow-opencv:19.02-py3 -- python train.py
 ```
 
+## check dotscience
+
+You should see provenance & metrics data in Dotscience!

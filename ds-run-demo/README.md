@@ -6,7 +6,7 @@ To run this using `ds run`, try the following:
 
 Make a new project in Dotscience.
 
-Find your project id in the dotscience UI - by uploading a script (python or shell) and then expanding the "Run script" instructions - the project id is after the sample `ds run .` command and looks like `project-23d1a936-default-workspace`
+Find your project id in the dotscience UI - on the resource page there's a sample `ds run .` command and looks like `857bdca-14ab24d-143dba21`
 
 ```
 export PROJECT=<your project id>

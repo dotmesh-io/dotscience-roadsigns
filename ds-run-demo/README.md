@@ -1,5 +1,7 @@
 # ds run demo
 
+**NOTE: This demo requires a runner with a GPU**
+
 To run this using `ds run`, try the following:
 
 ## setup
